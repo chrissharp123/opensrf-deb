@@ -1,0 +1,14 @@
+Package: opensrf
+Version: 2.1.2
+Architecture: amd64
+Maintainer: Joshua Lamos <jlamos@georgialibraries.org>
+Installed-Size: 1516
+Depends: libc6 (>= 2.15), libmemcached6 (>= 0.44), libreadline6 (>= 6.0), libxml2 (>= 2.7.4), debconf (>= 0.5) | debconf-2.0, apache2-mpm-prefork, ejabberd, less, libapache2-mod-perl2, libcache-memcached-perl, libclass-dbi-sqlite-perl, libdatetime-format-builder-perl, libdatetime-format-mail-perl, libdatetime-perl, libdatetime-timezone-perl, liberror-perl, libfile-find-rule-perl, libfreezethaw-perl, liblog-log4perl-perl, libmodule-build-perl, libnet-jabber-perl, librpc-xml-perl, libtemplate-perl, libtest-pod-perl, libtie-ixhash-perl, libtool, libuniversal-require-perl, libunix-syslog-perl, libwww-perl, libxml-libxml-perl, libxml-libxslt-perl, libxml-simple-perl, ntpdate, pkg-config, psmisc, python-libxml2, python-setuptools, libdatetime-format-iso8601-perl, libjson-xs-perl, libnet-server-perl, libmemcached-tools
+Section: devel
+Priority: extra
+Homepage: http://open-ils.org
+Description: OpenSRF Message Routing Network
+ Open Service Request Framework (OpenSRF, pronounced "open surf")
+ OpenSRF is a message routing network that offers scalability and
+ failover support for individual services and entire servers with
+ minimal development and deployment overhead.

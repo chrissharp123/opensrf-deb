@@ -1,0 +1,133 @@
+#!/bin/sh
+#
+# Copyright (C) 2008 Equinox Software, Inc.
+# Kevin Beswick <kevinbeswick00@gmail.com>
+# Copyright (C) 2010 Laurentian University
+# Dan Scott <dscott@laurentian.ca>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+
+# Shows configuration options of OpenSRF
+
+prefix=/openils
+exec_prefix=${prefix}
+datarootdir=${prefix}/share
+
+showInstalled() {
+    JAVA=false
+    PYTHON=false
+    if test "$JAVA" = "true"; then
+        echo "OSRF_JAVA"
+    fi
+    if test "$PYTHON" = "true"; then
+        echo "OSRF_PYTHON"
+    fi
+}
+
+showAll() {
+    echo OpenSRF 2.1.2
+    echo PREFIX=/openils
+    echo BINDIR=${exec_prefix}/bin
+    echo LIBDIR=${exec_prefix}/lib
+    echo TMP=/tmp
+    echo INCLUDEDIR=${prefix}/include
+    echo SYSCONFDIR=/openils/conf
+    echo APXS2=/usr/bin/apxs2
+    echo APACHE2_HEADERS=/usr/include/apache2
+    echo APR_HEADERS=/usr/include/apr-1.0
+    echo LIBXML2_HEADERS=/usr/include/libxml2/
+    echo
+    echo "Installed modules:"
+    showInstalled;
+}
+
+showHelp() {
+    echo
+    echo "------------------------------------------------------------"
+    echo " osrf_config                                                "
+    echo " Display the configuration options for this OpenSRF install "
+    echo "------------------------------------------------------------"
+    echo
+    echo "Usage: osrf_config [--option]"
+    echo
+    echo "Options: "
+    echo
+    echo "--help                  displays help"
+    echo "--version               displays version number of OpenSRF"
+    echo "--installed             displays options that were chosen at install time"
+    echo
+    echo "--apache                displays location of Apache headers"
+    echo "--apr                   displays location of Apache portable runtime headers"
+    echo "--apxs                  displays location of Apache extension tool"
+    echo "--bindir                displays location of binary executables"
+    echo "--includedir            displays location of header files"
+    echo "--libdir                displays location of libraries"
+    echo "--libxml                displays location of libxml2 headers"
+    echo "--localstatedir         displays location of state information"
+    echo "--prefix                displays install prefix"
+    echo "--sysconfdir            displays location of configuration files"
+    echo "--tmp                   displays location of temporary files"
+    echo
+}
+
+case "$1" in
+    --installed)
+        showInstalled
+        ;;
+    --cconfig) cconfig;
+             ;;
+    --libxml)
+        echo /usr/include/libxml2/
+        ;;
+    --apr)
+        echo /usr/include/apr-1.0
+        ;;
+    --apache)
+        echo /usr/include/apache2
+        ;;
+    --prefix)
+        echo /openils
+        ;;
+    --version)
+        echo OpenSRF 2.1.2
+        ;;
+    --bindir)
+        echo ${exec_prefix}/bin
+        ;;
+    --libdir)
+        echo ${exec_prefix}/lib
+        ;;
+    --sysconfdir)
+        echo /openils/conf
+        ;;
+    --localstatedir)
+        echo ${prefix}/var
+        ;;
+    --tmpdir)
+        echo /tmp
+        ;;
+    --apxs)
+        echo /usr/bin/apxs2
+        ;;
+    --includedir)
+        echo ${prefix}/include
+        ;;
+    --docdir)
+        echo ${datarootdir}/doc/${PACKAGE_TARNAME}
+        ;;
+    --help)
+        showHelp
+        ;;
+    *)
+        showAll
+        ;;
+esac

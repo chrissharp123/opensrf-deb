@@ -1,0 +1,221 @@
+# ---------------------------------------------------------------------
+# Author: Bill Erickson <erickson@esilibrary.com>
+# Author: Dan Scott <dscott@laurentian.ca>
+#
+# Makefile to install prerequisites for OpenSRF
+#
+# Currently supports Debian (squeeze), Ubuntu (lucid/precise)
+# and Fedora (16).
+#
+# Installs Perl prereqs, libjs with Perl wrapper
+#
+# usage:
+# 	make -f Makefile.install debian-squeeze
+# 	- or -
+# 	make -f Makefile.install ubuntu-lucid
+# 	- or -
+# 	make -f Makefile.install ubuntu-precise
+# 	- or -
+# 	make -f Makefile.install fedora
+#
+# ---------------------------------------------------------------------
+
+# Make any assumptions about the shell being used explicit
+SHELL=/bin/bash 
+
+# 64 or 32 bit os?
+LBITS=$(shell getconf LONG_BIT)
+
+APT_TOOL=apt-get -yq
+
+# Debian dependencies
+DEBS =  \
+	apache2-mpm-prefork\
+	apache2-prefork-dev\
+	autoconf\
+	automake\
+	build-essential\
+	check\
+	ejabberd\
+	less\
+	libapache2-mod-perl2\
+	libcache-memcached-perl\
+	libclass-dbi-abstractsearch-perl\
+	libclass-dbi-sqlite-perl\
+	libdatetime-format-builder-perl\
+	libdatetime-format-mail-perl\
+	libdatetime-perl\
+	libdatetime-timezone-perl\
+	liberror-perl\
+	libexpat1-dev\
+	libfile-find-rule-perl\
+	libgcrypt11-dev \
+	libgdbm-dev \
+	liblog-log4perl-perl\
+	libmodule-build-perl\
+	libnet-dns-perl\
+	libnet-jabber-perl\
+	libperl-dev\
+	libreadline-dev\
+	librpc-xml-perl\
+	libtemplate-perl\
+	libtest-pod-perl\
+	libtie-ixhash-perl\
+	libtool\
+	libuniversal-require-perl\
+	libunix-syslog-perl\
+	libwww-perl\
+	libxml2-dev\
+	libxml-libxml-perl\
+	libxml-libxslt-perl\
+	libxml-simple-perl\
+	libxslt1-dev\
+	memcached\
+	pkg-config\
+	psmisc\
+	python-dev\
+	python-libxml2\
+	python-setuptools\
+	tar\
+	zlib1g-dev
+
+FEDORAS = \
+	autoconf \
+	automake \
+	check \
+	check-devel \
+	ejabberd \
+	expat-devel \
+	gcc \
+	gdbm-devel \
+	httpd \
+	httpd-devel \
+	less \
+	libgcrypt-devel \
+	libmemcached \
+	libmemcached-devel \
+	libtool \
+	libxml2-devel \
+	libxml2-python \
+	libxslt-devel \
+	make \
+	memcached \
+	mod_perl \
+	perl-Cache-Memcached \
+	perl-Class-DBI \
+	perl-Class-DBI-AbstractSearch \
+	perl-Class-DBI-SQLite \
+	perl-DateTime-Format-Builder \
+	perl-DateTime-Format-ISO8601 \
+	perl-DateTime-Format-Mail \
+	perl-DateTime-Set \
+	perl-devel \
+	perl-Error \
+	perl-File-Find-Rule \
+	perl-JSON-XS \
+	perl-libwww-perl \
+	perl-Log-Log4perl \
+	perl-Module-Build \
+	perl-Net-DNS \
+	perl-Net-Jabber \
+	perl-Net-Server \
+	perl-RPC-XML \
+	perl-SQL-Abstract-Limit \
+	perl-Template-Toolkit \
+	perl-Test-Deep \
+	perl-Test-Exception \
+	perl-Test-Pod \
+	perl-Tie-IxHash \
+	perl-UNIVERSAL-require \
+	perl-Unix-Syslog \
+	perl-XML-LibXML \
+	perl-XML-LibXSLT \
+	perl-XML-Simple \
+	psmisc \
+	python-devel \
+	python-dns \
+	python-memcached \
+	python-setuptools \
+	python-simplejson \
+	readline-devel \
+	tar
+
+DEB_APACHE_MODS = \
+	ssl
+
+EXTRA_DEBS = \
+	libdatetime-format-iso8601-perl \
+	libjson-xs-perl \
+	libnet-server-perl
+
+EXTRA_DEBS_SQUEEZE = \
+	libmemcached-dev \
+	libmemcached-tools \
+	libxml-libxml-perl \
+	libxml-libxslt-perl
+
+EXTRA_DEBS_UBUNTU_LUCID = \
+	libmemcached-dev\
+	libxml-libxml-perl \
+	libxml-libxslt-perl
+
+EXTRA_DEBS_UBUNTU_PRECISE = \
+	libmemcached-dev\
+	libxml-libxml-perl \
+	libxml-libxslt-perl \
+	ncurses-dev
+
+# ----------------------------------------------------------------------------
+
+all: 
+	@echo "please specify an OS" && exit 0
+
+
+debian-squeeze: generic_debian squeeze
+squeeze: install_extra_debs_squeeze
+generic_debian: install_debs debian_sys_config
+
+fedora: install_fedora_rpms
+
+ubuntu-lucid: generic_ubuntu lucid
+ubuntu-precise: generic_ubuntu precise
+lucid: install_extra_debs install_extra_debs_lucid
+precise: install_extra_debs install_extra_debs_precise
+generic_ubuntu: install_debs debian_sys_config
+
+# ------------------------------------------------------------------
+# - DEBIAN ---------------------------------------------------------
+
+debian_sys_config: 
+	# link the apache modules in
+	for m in $(DEB_APACHE_MODS); do a2enmod $$m; done;
+
+	# adds a placeholder module so apxs will be happy
+	if [ ! "$$(grep mod_placeholder /etc/apache2/httpd.conf)" ]; then \
+		echo -e "#\n#LoadModule mod_placeholder /usr/lib/apache2/modules/mod_placeholder.so" \
+			>> /etc/apache2/httpd.conf; \
+	fi;
+
+# Install the debian-specific dependencies
+install_debs:
+	$(APT_TOOL) install $(DEBS)
+
+# Install the debian-specific dependencies for more modern distros
+install_extra_debs:
+	$(APT_TOOL) install $(EXTRA_DEBS)
+
+install_extra_debs_squeeze: install_extra_debs
+	$(APT_TOOL) install $(EXTRA_DEBS_SQUEEZE)
+
+# Install even more packaged dependencies on modern distros
+install_extra_debs_lucid:
+	$(APT_TOOL) install $(EXTRA_DEBS_UBUNTU_LUCID)
+
+install_extra_debs_precise:
+	$(APT_TOOL) install $(EXTRA_DEBS_UBUNTU_PRECISE)
+
+# Fedora
+install_fedora_rpms:
+	yum -y install $(FEDORAS)
+
+# vim:noet:sw=4:ts=4:

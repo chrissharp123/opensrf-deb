@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Fri, 15 Mar 2013 15:06:34 -0400
+Source: opensrf
+Binary: opensrf
+Architecture: source amd64
+Version: 2.1.2
+Distribution: unstable
+Urgency: low
+Maintainer: Joshua Lamos <jlamos@georgialibraries.org>
+Changed-By: Pines Admins  <pines-admins@georgialibraries.org>
+Description: 
+ opensrf    - OpenSRF Message Routing Network
+Changes: 
+ opensrf (2.1.2) unstable; urgency=low
+ .
+   * Initial Release.
+Checksums-Sha1: 
+ 33118c680d655361f06570beccf20936bc3f41f2 917 opensrf_2.1.2.dsc
+ f853a788e38ffe651fbd702fe7ff2b95261472bd 1074979 opensrf_2.1.2.tar.gz
+ 057b20e052641950d0669c10ade549fa019938eb 418670 opensrf_2.1.2_amd64.deb
+Checksums-Sha256: 
+ c66c064c765b8cf14653beb04a81a043cdf4f14806c0437ce4758d5a2f0c1639 917 opensrf_2.1.2.dsc
+ 98846259373062f69960b47741c02ad9cfcb29e0e796ac35b088fb195270e802 1074979 opensrf_2.1.2.tar.gz
+ ceab7305937e683d32cc09b9559d5d16abb040678897824e31e098f554db8cd8 418670 opensrf_2.1.2_amd64.deb
+Files: 
+ 839d1c0d355218641456e3c229c30839 917 devel extra opensrf_2.1.2.dsc
+ 90714aa460d4eb55bb74d02929800dc9 1074979 devel extra opensrf_2.1.2.tar.gz
+ da3807bb88003ebd69e9c5f6ccf94956 418670 devel extra opensrf_2.1.2_amd64.deb

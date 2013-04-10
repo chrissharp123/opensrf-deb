@@ -1,0 +1,1 @@
+LoadModule osrf_http_translator_module /usr/lib/apache2/modules/osrf_http_translator.so

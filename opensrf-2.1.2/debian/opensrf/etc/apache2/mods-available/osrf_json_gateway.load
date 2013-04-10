@@ -1,0 +1,1 @@
+LoadModule osrf_json_gateway_module /usr/lib/apache2/modules/osrf_json_gateway.so

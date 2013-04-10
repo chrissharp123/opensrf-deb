@@ -1,0 +1,3 @@
+/etc/apache2/mods-available/osrf_json_gateway.load
+/etc/apache2/mods-available/osrf_http_translator.load
+/etc/init.d/opensrf

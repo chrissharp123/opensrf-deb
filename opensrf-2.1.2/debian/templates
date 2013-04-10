@@ -1,0 +1,59 @@
+Template: opensrf/user_password
+Type: password
+Description: The password for user account opensrf:
+ Please provide the password for the opensrf Linux account. 
+ You will log into the system as user opensrf with this password
+
+Template: opensrf/verify_user_password
+Type: password
+Description: The password for user account opensrf:
+ Please reenter the password for the opensrf user for verification.
+
+Template: opensrf/ejabber_pub_router_pw
+Type: password
+Description: The password for the public router user:
+ Please enter the password for the public router user in ejabberd.
+
+Template: opensrf/ejabber_priv_router_pw
+Type: password
+Description: The password for the private router user:
+ Please enter the password for the private router user in ejabberd.
+
+Template: opensrf/ejabber_pub_opensrf_pw
+Type: password
+Description: The password for the public opensrf user:
+ Please enter the password for the public opensrf user in ejabberd.
+
+Template: opensrf/ejabber_priv_opensrf_pw
+Type: password
+Description: The password for the private opensrf user:
+ Please enter the password for the private opensrf user in ejabberd.
+
+Template: opensrf/ejabber_password
+Type: password
+Description: The password for opensrf within EJabberd:
+ Please provide the password for the opensrf and router users within Ejabberd.
+ You will use these crendentials within opensrf.xml.
+
+Template: opensrf/verify_ejabber_password
+Type: password
+Description: The password for opensrf within EJabberd:
+ Please reenter the password for the opensrf and router users within Ejabberd.
+ You will use these crendentials within opensrf.xml.
+
+Template: opensrf/fqdn
+Type: string
+Description: The fully qualified domain name to use:
+ Please enter the fully qualified domain name to use.
+ This will be used within the various opensrf config files.
+
+Template: opensrf/user_nomatch
+Type: error
+Description: The passwords do not match!
+ The passwords you have typed do not match. Please try again.
+
+Template: opensrf/ejabber_nomatch
+Type: error
+Description: The passwords do not match!
+ The passwords you have typed do not match. Please try again.
+
