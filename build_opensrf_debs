@@ -1,6 +1,6 @@
 #!/bin/bash
 #TODO: insert license GPLv3 tag copyright gpls/emerald data
-VERSION_=2.1.2
+VERSION_=2.4.0-alpha
 
 ## Set work directory to current directory
 WORKDIR="$(dirname $(readlink -f $0))"
@@ -16,6 +16,9 @@ OPENSRF_PREFIX="/openils"
 ## OpenSRF config directory.
 OPENSRF_CONF_DIR="${OPENSRF_PREFIX}/conf"
 
+## Resulting .deb file
+DEB_FILE="opensrf_${VERSION_}_amd64.deb"
+
 ORIG_PKGFILE="../${PKGFILE}"
 SOURCE_FOLDER="${WORKDIR}/$(echo $PKGFILE|awk -F".tar" '{ print $1 }')"
 DEST_ROOT="${SOURCE_FOLDER}/debian/opensrf"
@@ -23,15 +26,29 @@ export DEBEMAIL="$(grep @ ${BUILDFILESDIR}/control|awk -F"[<>]" '{ print $2 }')"
 export DEBFULLNAME="$(grep @ ${BUILDFILESDIR}/control|awk -F"[<>:]" '{ print $2 }')"
 
 echo
-echo "Select the build type"
-select BUILDTYPE in Standalone Cluster
-        do
+echo "Select the build type."
+echo "Standalone: For single server installation."
+echo "Cluster: For clustered installations."
+echo "Clean: To clean this directory leaving the build files and  the deb file."
+echo
+select BUILDTYPE in Standalone Cluster Clean
+do
         case $BUILDTYPE in
                 Standalone ) echo You selected $BUILDTYPE; echo; sleep 1; break ;;
                 Cluster ) echo You selected $BUILDTYPE; echo; sleep 1; break ;;
+		Clean ) echo You selected $BUILDTYPE; echo; sleep 1; break ;;
                 * ) echo; echo "You must select 1 or 2";;
         esac
 done
+
+if [ "$BUILDTYPE" = "Clean" ]
+then
+	mv "$DEB_FILE" "/tmp" && \
+	rm -rf opensrf*
+	mv "/tmp/$DEB_FILE" "$WORKDIR"	
+	exit 
+fi
+
 echo Building $BUILDTYPE version..;echo
 
 STANDALONE=true
@@ -158,6 +175,16 @@ sed -i "s^(APXS2) -i -a @srcdir@/osrf_http_translator.la^(APXS2) -S LIBEXECDIR='
 #sed -i '6d' ${SOURCE_FOLDER}/tests/Makefile.am 
 sed -i 's/SUBDIRS = src tests/SUBDIRS = src/g' ${SOURCE_FOLDER}/Makefile.am
 sed -i 's/SUBDIRS = src tests/SUBDIRS = src/g' ${SOURCE_FOLDER}/Makefile.in
+
+echo "#MARK"
+#sed -i "s^@bindir@/opensrf-perl.pl @bindir@/osrf_control^${DEST_ROOT}/opensrf-perl.pl ${DEST_ROOT}/osrf_control^g" ${SOURCE_FOLDER}/Makefile.in
+#sed -i "s^@bindir@/opensrf-perl.pl @bindir@/osrf_control^${DEST_ROOT}/opensrf-perl.pl ${DEST_ROOT}/osrf_control^g" ${SOURCE_FOLDER}/Makefile.am
+
+
+#ln -s @bindir@/opensrf-perl.pl @bindir@/osrf_control; \
+
+
+
 
 sed -i 's|TESTS = check_osrf_message check_osrf_json_object check_osrf_list check_osrf_stack check_transport_client \\|TESTS = check_osrf_message check_osrf_json_object check_osrf_list check_osrf_stack \\|g' ${SOURCE_FOLDER}/tests/Makefile.am 
 sed -i 's|check_PROGRAMS = check_osrf_message check_osrf_json_object check_osrf_list check_osrf_stack check_transport_client \\|check_PROGRAMS = check_osrf_message check_osrf_json_object check_osrf_list check_osrf_stack \\|g' ${SOURCE_FOLDER}/tests/Makefile.am

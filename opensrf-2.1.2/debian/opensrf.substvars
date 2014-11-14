@@ -1,3 +1,0 @@
-misc:Depends=debconf (>= 0.5) | debconf-2.0
-perl:Depends=perl
-shlibs:Depends=libc6 (>= 2.15), libmemcached6 (>= 0.44), libreadline6 (>= 6.0), libxml2 (>= 2.7.4), opensrf

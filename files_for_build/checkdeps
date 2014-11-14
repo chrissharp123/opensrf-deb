@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -z "$1" ]
+then
+	echo;echo "You must enter the file to check"
+	echo "eg. $0 filename"
+	echo
+	exit 1
+fi	
+
+for DEP in $(cat $1) 
+do 
+	if ! grep -q "$DEP" control.cluster
+	then
+		if echo $DEP | grep -q '\-dev'
+		then
+			echo "Development Library: $DEP"
+		else
+			echo "missing: $DEP"
+		fi
+	fi
+done

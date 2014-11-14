@@ -225,6 +225,17 @@ update_rcd()
 #Update rc.d
 update-rc.d opensrf defaults > /dev/null
 }
+osfr_control_symlink()
+{
+        if [ -e /openils/bin/osrf_control ]
+        then
+                rm /openils/bin/osrf_control
+                ln -s /openils/bin/opensrf-perl.pl /openils/bin/osrf_control
+        else
+                ln -s /openils/bin/opensrf-perl.pl /openils/bin/osrf_control
+        fi
+}
+
 modify_hosts_file
 add_opensrf_user
 reconfigure_ejabberd
@@ -233,6 +244,7 @@ modify_apache
 configure_ld
 fix_osrf_perms
 configure_opensrf_xml
+osrf_control_symlink
 
 update_rcd
 

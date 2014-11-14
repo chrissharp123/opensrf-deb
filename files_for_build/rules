@@ -8,6 +8,7 @@ export DH_VERBOSE=1
 	dh $@ 
 override_dh_auto_configure:
 	./configure --prefix=/openils --sysconfdir=/openils/conf
+	#TACOS FOR LUNCH!
 override_dh_usrlocal:
 	echo "Skipping dh_usrlocal!"
 

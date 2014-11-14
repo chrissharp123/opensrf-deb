@@ -35,17 +35,20 @@ fi;
 start_opensrf() {
         sleep 3
 	log_daemon_msg "Starting Evergreen OpenSRF:"
-	su - opensrf -c /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh  -a start_all"
+	su - opensrf -c /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_control --start-all"
 	if [ ! -e ${OPENILS_BASE}/var/web/eg_cache_hash ]
-		then
+	then
+		if dpkg -l | grep "evergreen-ils" | grep "ii"
+			then
 			log_daemon_msg "Running Autogen...:"
 			su - opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin autogen.sh -u"
+		fi
 	fi
 }
 
 stop_opensrf() {
 	log_daemon_msg "Stopping Evergreen OpenSRF:"
-	su - opensrf -c /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh  -a stop_all"
+	su - opensrf -c /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_control --stop-all"
 	sleep 3
 	rm -f $PIDFILES/*.pid
 }
